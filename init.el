@@ -39,6 +39,7 @@
 ;;; Use ido-mode
 (ido-mode t)
 (ido-everywhere t)
+(setq ido-show-dot-for-dired t)
 
 ;;; 80 width master race
 (setq-default fill-column 80)
