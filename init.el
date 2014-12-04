@@ -54,11 +54,11 @@
 (setq smex-save-file "~/.emacs.d/plugin-data/smex/smex-items")
 
 ;;; Ido
-;; Jump to bookmarks with Ido
 (defun ido-bookmark-jump (bname)
   "*Switch to bookmark interactively using `ido'."
   (interactive (list (ido-completing-read "Bookmark: " (bookmark-all-names) nil t)))
   (bookmark-jump bname))
+
 (global-set-key (kbd "C-x r b") 'ido-bookmark-jump)
 
 ;;;
