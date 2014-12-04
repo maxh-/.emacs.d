@@ -1,4 +1,4 @@
-a;;;
+;;;
 ;;; General
 ;;;
 
@@ -48,7 +48,7 @@ a;;;
 (defun ss-163 ()
   (interactive)
   (set-frame-size (selected-frame) 163 65))
-3
+
 ;;;
 ;;; Plugins
 ;;;
