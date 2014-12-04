@@ -1,4 +1,4 @@
-;;;
+a;;;
 ;;; General
 ;;;
 
@@ -41,10 +41,14 @@
 (ido-everywhere t)
 (setq ido-show-dot-for-dired t)
 
-;;; 80 width master race
-(setq-default fill-column 80)
-(longlines-mode t)
-
+;;; Set frame size
+(defun ss-80 ()
+  (interactive)
+  (set-frame-size (selected-frame) 80 65))
+(defun ss-163 ()
+  (interactive)
+  (set-frame-size (selected-frame) 163 65))
+3
 ;;;
 ;;; Plugins
 ;;;
@@ -57,7 +61,8 @@
 ;;; Ido
 (defun ido-bookmark-jump (bname)
   "*Switch to bookmark interactively using `ido'."
-  (interactive (list (ido-completing-read "Bookmark: " (bookmark-all-names) nil t)))
+  (interactive (list 
+		(ido-completing-read "Bookmark: " (bookmark-all-names) nil t)))
   (bookmark-jump bname))
 
 (global-set-key (kbd "C-x r b") 'ido-bookmark-jump)
@@ -79,5 +84,10 @@
 
 ;; Custom colors & fonts
 (custom-set-faces
- '(default ((t (:inherit nil :stipple nil :background "#1d1f21" :foreground "#c5c8c6" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "monotype" :family "Consolas"))))
+ '(default ((t (:inherit nil :stipple nil :background "#1d1f21" 
+			 :foreground "#c5c8c6" :inverse-video nil 
+			 :box nil :strike-through nil :overline nil 
+			 :underline nil :slant normal :weight normal 
+			 :height 110 :width normal :foundry "monotype" 
+			 :family "Consolas"))))
  '(magit-item-highlight ((t (:background "gray36")))))
