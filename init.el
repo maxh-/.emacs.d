@@ -48,3 +48,18 @@
 (autoload 'smex "smex")
 (global-set-key (kbd "M-x") 'smex)
 (setq smex-save-file "~/.emacs.d/plugin-data/smex/smex-items")
+
+;;;
+;;; Theme
+;;;
+
+;; Theme directory
+(setq custom-theme-directory "~/.emacs.d/themes")
+(add-to-list 'load-path "~/.emacs.d/themes")
+
+;; Treat all themes as safe
+(custom-set-variables '(custom-safe-themes t))
+(custom-set-faces)
+
+;; Theme
+(load-theme 'tomorrow-night t)
