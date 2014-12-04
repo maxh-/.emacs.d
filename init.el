@@ -77,6 +77,7 @@
 ;; Theme
 (load-theme 'tomorrow-night t)
 
-;; Custom colors
+;; Custom colors & fonts
 (custom-set-faces
+ '(default ((t (:inherit nil :stipple nil :background "#1d1f21" :foreground "#c5c8c6" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 110 :width normal :foundry "monotype" :family "Consolas"))))
  '(magit-item-highlight ((t (:background "gray36")))))
