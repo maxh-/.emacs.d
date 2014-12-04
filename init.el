@@ -49,6 +49,14 @@
 (global-set-key (kbd "M-x") 'smex)
 (setq smex-save-file "~/.emacs.d/plugin-data/smex/smex-items")
 
+;;; Ido
+;; Jump to bookmarks with Ido
+(defun ido-bookmark-jump (bname)
+  "*Switch to bookmark interactively using `ido'."
+  (interactive (list (ido-completing-read "Bookmark: " (bookmark-all-names) nil t)))
+  (bookmark-jump bname))
+(global-set-key (kbd "C-x r b") 'ido-bookmark-jump)
+
 ;;;
 ;;; Theme
 ;;;
@@ -58,8 +66,12 @@
 (add-to-list 'load-path "~/.emacs.d/themes")
 
 ;; Treat all themes as safe
-(custom-set-variables '(custom-safe-themes t))
-(custom-set-faces)
+(custom-set-variables
+ '(custom-safe-themes t))
 
 ;; Theme
 (load-theme 'tomorrow-night t)
+
+;; Custom colors
+(custom-set-faces
+ '(magit-item-highlight ((t (:background "gray36")))))
