@@ -54,7 +54,7 @@
   (set-frame-size (selected-frame) 163 65))
 
 ;;;
-;;; Plugins
+;;; Custom keybindings etc
 ;;;
 
 ;;; Smex (M-x enhancement, like Ido)
@@ -65,15 +65,20 @@
 ;;; Interactive bookmark jump
 (require 'bookmark)
 (defun ido-bookmark-jump (bname)
-  "*Switch to bookmark interactively using `ido'."
   (interactive (list 
 		(ido-completing-read "Bookmark: " (bookmark-all-names) nil t)))
   (bookmark-jump bname))
-
 (global-set-key (kbd "C-x r b") 'ido-bookmark-jump)
 
 ;;; Dired subtree viewing with 'i'
+(require 'dired)
 (define-key dired-mode-map (kbd "i") 'dired-subtree-toggle)
+
+;;; Toggle show hidden files with C-c h
+(require 'dired-x)
+(setq dired-omit-files "^\\...+$")
+(add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
+(define-key dired-mode-map (kbd "C-c h") 'dired-omit-mode)
 
 ;;;
 ;;; Theme
