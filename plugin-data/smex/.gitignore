@@ -1,0 +1,7 @@
+# This folder is required for smex, but I don't want
+# the smexfile itself in the repo
+
+# Ignore everything in this directory
+*
+# Except this file
+!.gitignore

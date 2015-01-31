@@ -19,6 +19,9 @@
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 
+;;; Make executables work on OSX
+(exec-path-from-shell-initialize)
+
 ;;; Put backup files in tmp directory
 (setq backup-directory-alist `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
@@ -84,24 +87,16 @@
 ;;; Theme
 ;;;
 
-;; Custom theme directory
+;;; Custom theme directory
 (setq custom-theme-directory "~/.emacs.d/themes")
 (add-to-list 'load-path "~/.emacs.d/themes")
 
-;; Treat all themes as safe
+;;; Treat all themes as safe
 (custom-set-variables
  '(custom-safe-themes t))
 
-;; Theme
+;;; Theme
 (load-theme 'tomorrow-night t)
 
-;; Custom colors & fonts
-(custom-set-faces
- '(default ((t (:inherit nil :stipple nil :background "#1d1f21"
-			 :foreground "#c5c8c6" :inverse-video nil
-			 :box nil :strike-through nil :overline nil
-			 :underline nil :slant normal :weight normal
-			 :height 100 :width normal :foundry "bitstream"
-			 :family "Meslo LG M DZ")))))
-
+;;; Custom colors & fonts
 (lisp-extra-font-lock-global-mode t)
