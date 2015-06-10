@@ -60,6 +60,10 @@
 ;;; Custom keybindings etc
 ;;;
 
+;;; Slime
+(setq inferior-lisp-program "/usr/bin/sbcl")
+(setq slime-contribs '(slime-fancy))
+
 ;;; Smex (M-x enhancement, like Ido)
 (autoload 'smex "smex")
 (global-set-key (kbd "M-x") 'smex)
@@ -83,6 +87,12 @@
 (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
 (define-key dired-mode-map (kbd "C-c h") 'dired-omit-mode)
 
+;;; Request sudo password if file requires SU permissions
+(defadvice ido-find-file (after find-file-sudo activate)
+  (unless (and buffer-file-name
+               (file-writable-p buffer-file-name))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
 ;;;
 ;;; Theme
 ;;;
@@ -93,10 +103,33 @@
 
 ;;; Treat all themes as safe
 (custom-set-variables
- '(custom-safe-themes t))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes t)
+ '(latex-run-command "xelatex")
+ '(pdf-latex-command "xelatex")
+ '(tex-run-command "xelatex"))
 
 ;;; Theme
 (load-theme 'tomorrow-night t)
 
 ;;; Custom colors & fonts
 (lisp-extra-font-lock-global-mode t)
+
+;;; Font
+(set-face-font 'default "-misc-fixed-medium-r-normal-*-14-*-*-*-*-*-iso10646-1")
+
+;;;
+;;; LaTeX stuff
+;;;
+
+;;; Use xetex stuff
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
