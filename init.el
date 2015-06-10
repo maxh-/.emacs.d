@@ -48,19 +48,11 @@
 (ido-everywhere t)
 (setq ido-show-dot-for-dired t)
 
-;;; Set frame size
-(defun ss-80 ()
-  (interactive)
-  (set-frame-size (selected-frame) 80 65))
-(defun ss-163 ()
-  (interactive)
-  (set-frame-size (selected-frame) 163 65))
-
 ;;;
 ;;; Custom keybindings etc
 ;;;
 
-;;; Slime
+;;; Slime setup
 (setq inferior-lisp-program "/usr/bin/sbcl")
 (setq slime-contribs '(slime-fancy))
 
@@ -69,7 +61,7 @@
 (global-set-key (kbd "M-x") 'smex)
 (setq smex-save-file "~/.emacs.d/plugin-data/smex/smex-items")
 
-;;; Interactive bookmark jump
+;;; Interactive bookmark jump (requires ido)
 (require 'bookmark)
 (defun ido-bookmark-jump (bname)
   (interactive (list 
@@ -103,14 +95,7 @@
 
 ;;; Treat all themes as safe
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes t)
- '(latex-run-command "xelatex")
- '(pdf-latex-command "xelatex")
- '(tex-run-command "xelatex"))
+ '(custom-safe-themes t))
 
 ;;; Theme
 (load-theme 'tomorrow-night t)
@@ -122,14 +107,11 @@
 (set-face-font 'default "-misc-fixed-medium-r-normal-*-14-*-*-*-*-*-iso10646-1")
 
 ;;;
-;;; LaTeX stuff
+;;; LaTeX
 ;;;
 
-;;; Use xetex stuff
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;;; Use xelatex
+(custom-set-variables
+ '(latex-run-command "xelatex")
+ '(pdf-latex-command "xelatex")
+ '(tex-run-command "xelatex"))
