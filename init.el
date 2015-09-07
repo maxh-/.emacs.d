@@ -102,9 +102,13 @@
 
 ;;; Custom colors & fonts
 (lisp-extra-font-lock-global-mode t)
-
-;;; Font
-(set-face-font 'default "-misc-fixed-medium-r-normal-*-14-*-*-*-*-*-iso10646-1")
+(custom-set-faces
+ '(default ((t (:inherit nil :stipple nil :background "#1d1f21"
+			 :foreground "#c5c8c6" :inverse-video nil
+			 :box nil :strike-through nil :overline nil
+			 :underline nil :slant normal :weight normal
+			 :height 105 :width normal :foundry "unknown"
+			 :family "DejaVu Sans Mono")))))
 
 ;;;
 ;;; LaTeX
@@ -115,3 +119,4 @@
  '(latex-run-command "xelatex")
  '(pdf-latex-command "xelatex")
  '(tex-run-command "xelatex"))
+
