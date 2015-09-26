@@ -114,9 +114,6 @@
 ;;; LaTeX
 ;;;
 
-;;; Use xelatex
-(custom-set-variables
- '(latex-run-command "xelatex")
- '(pdf-latex-command "xelatex")
- '(tex-run-command "xelatex"))
-
+;;; Try to load dtek latex settings
+(if (file-exists-p (concat user-emacs-directory "dtek-latex-settings.el"))
+    (load-file (concat user-emacs-directory "dtek-latex-settings.el")))
