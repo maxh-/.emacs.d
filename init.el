@@ -85,6 +85,14 @@
                (file-writable-p buffer-file-name))
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
+;;; Web-mode indentation settings
+(setq web-mode-markup-indent-offset 2)
+(setq web-mode-css-indent-offset 2)
+(setq web-mode-code-indent-offset 2)
+
+;;; Javascript-mode indentation settings
+(setq js-indent-level 2)
+
 ;;;
 ;;; Theme
 ;;;
@@ -95,6 +103,10 @@
 
 ;;; Treat all themes as safe
 (custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(custom-safe-themes t))
 
 ;;; Theme
@@ -103,12 +115,11 @@
 ;;; Custom colors & fonts
 (lisp-extra-font-lock-global-mode t)
 (custom-set-faces
- '(default ((t (:inherit nil :stipple nil :background "#1d1f21"
-			 :foreground "#c5c8c6" :inverse-video nil
-			 :box nil :strike-through nil :overline nil
-			 :underline nil :slant normal :weight normal
-			 :height 105 :width normal :foundry "unknown"
-			 :family "DejaVu Sans Mono")))))
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "#1d1f21" :foreground "#c5c8c6" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 105 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
 
 ;;;
 ;;; LaTeX
