@@ -1,5 +1,5 @@
 ;;;
-;;; General settings
+;;; General settings.
 ;;;
 
 ;;; Enable the MELPA user repository.
@@ -74,15 +74,21 @@
     (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
 
 ;;;
-;;; Indentation settings for different modes.
+;;; Indentation settings.
 ;;;
 
-;;; Web-mode indentation settings.
+;;; Don't use tabs.
+(setq-default indent-tabs-mode nil)
+
+;;; If someone uses tabs, display them as 2 spaces.
+(setq tab-width 2)
+
+;;; Web-mode indentation settings (2 spaces).
 (setq web-mode-markup-indent-offset 2)
 (setq web-mode-css-indent-offset 2)
 (setq web-mode-code-indent-offset 2)
 
-;;; Javascript-mode indentation settings.
+;;; Javascript-mode indentation settings (2 spaces).
 (setq js-indent-level 2)
 
 ;;;
