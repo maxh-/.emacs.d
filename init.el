@@ -175,8 +175,16 @@
 ;; Open an eshell in a new window below the current one with C-c C-t.
 
 (defun open-terminal-below ()
+  "Split the window vertically and open a terminal below it."
   (interactive)
   (progn (split-window-below)
          (other-window 1)
          (eshell)))
-(global-set-key (kbd "C-c C-t") 'open-terminal-below)
+(global-set-key (kbd "C-c t") 'open-terminal-below)
+
+;; Switch windows with C-c h/j/k/l (vim-like movement)
+
+(global-set-key (kbd "C-c h") 'windmove-left)
+(global-set-key (kbd "C-c l") 'windmove-right)
+(global-set-key (kbd "C-c k") 'windmove-up)
+(global-set-key (kbd "C-c j") 'windmove-down)
