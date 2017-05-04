@@ -163,11 +163,10 @@
 (setq custom-theme-directory "~/.emacs.d/themes")
 (add-to-list 'load-path "~/.emacs.d/themes")
 
-;; In GUI Emacs, use Tomorrow Night theme by Chris Kempson.
+;; Set theme to Tomorrow Night theme by Chris Kempson.
 
-(when (display-graphic-p)
-  (require 'color-theme-tomorrow)
-  (color-theme-tomorrow--define-theme night))
+(require 'color-theme-tomorrow)
+(color-theme-tomorrow--define-theme night)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
