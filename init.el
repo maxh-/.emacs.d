@@ -15,11 +15,6 @@
 
 (package-initialize)
 
-;; Benchmark Startup
-
-(require 'benchmark-init)
-(benchmark-init/activate)
-
 ;; Remove window decorations and general bling.
 
 (blink-cursor-mode 0)
@@ -120,20 +115,17 @@
 ;;; Indentation and language specific settings.
 ;;;
 
-;; Use spaces over tabs.
+;; Use spaces over tabs. Show tabs as 2 spaces wide. Delete if you prefer tabs.
 
 (setq-default indent-tabs-mode nil)
-
-;; Display tab character as 2 spaces wide. (They are still tabs.)
-
 (setq tab-width 2)
 
 ;; Mode-specific indentation settings.
 
-(setq web-mode-markup-indent-offset 2)
-(setq web-mode-css-indent-offset 2)
-(setq web-mode-code-indent-offset 2)
-(setq js-indent-level 2)
+(setq web-mode-markup-indent-offset 2)  ; for web-mode
+(setq web-mode-css-indent-offset 2)     ; ...
+(setq web-mode-code-indent-offset 2)    ; ...
+(setq js-indent-level 2)                ; for javascript
 
 ;; Use ESLINT for Javascript if installed on the system.
 
@@ -150,6 +142,14 @@
 ;;;
 ;;; Themes and fonts.
 ;;;
+
+;; Font. Change "Dejavu Sans Mono" to your favourite font.
+
+(set-face-attribute 'default nil
+                    :font "DejaVu Sans Mono"
+                    :foreground "#c5c8c6"
+                    :background "#222222"
+                    :height 105)
 
 ;; Treat all themes as safe
 ;; Caution: Themes can execute arbitrary code.
@@ -169,10 +169,16 @@
   (require 'color-theme-tomorrow)
   (color-theme-tomorrow--define-theme night))
 
-;; Font & settings. Add your favourite font instead of DejaVu Sans Mono.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Custom global keybindings.
+;;;
 
-(set-face-attribute 'default nil
-                    :font "DejaVu Sans Mono"
-                    :foreground "#c5c8c6"
-                    :background "#222222"
-                    :height 105)
+;; Open an eshell in a new window below the current one with C-c C-t.
+
+(defun open-terminal-below ()
+  (interactive)
+  (progn (split-window-below)
+         (other-window 1)
+         (eshell)))
+(global-set-key (kbd "C-c C-t") 'open-terminal-below)
