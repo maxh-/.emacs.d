@@ -1,15 +1,27 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; General settings.
+;;; General editor settings.
 ;;;
 
-;;; Enable the MELPA user repository.
+;; Enable the MELPA repository on emacs versions 24 or newer.
+;; View packages with `M-x list-packages`.
+
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (when (< emacs-major-version 24)
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+
+;; Autoload all installed packages.
+
 (package-initialize)
 
-;;; Remove window decorations and general bling.
+;; Benchmark Startup
+
+(require 'benchmark-init)
+(benchmark-init/activate)
+
+;; Remove window decorations and general bling.
+
 (blink-cursor-mode 0)
 (setq initial-scratch-message "")
 (setq inhibit-startup-message t
@@ -19,95 +31,148 @@
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 
-;;; Make executables work on OSX from eshell.
+;; Get the environment from user's shell.
+;; Useful for getting Emac's eshell to read from your $PATH.
+
 (exec-path-from-shell-initialize)
 
-;;; Put backup files in tmp directory so as to not clutter working tree.
+;; Put temporary files in tmp directory so as to not clutter working directory.
+
 (setq backup-directory-alist `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
 (setq auto-save-list-file-prefix temporary-file-directory)
 
-;;; Make emacs prompt less for file actions.
+;; Make emacs prompt less for file actions.
+
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq confirm-nonexistent-file-or-buffer nil)
-;; Don't ask to kill buffers with active processes.
+
+;; Don't ask to kill buffers with active processes. (Annoying.)
+
 (setq kill-buffer-query-functions
       (remq 'process-kill-buffer-query-function
-	    kill-buffer-query-functions))
+            kill-buffer-query-functions))
 
-;;; Show some useful info in modeline.
-(display-time-mode t)
-(line-number-mode t)
-(column-number-mode t)
+;; Show some useful info in modeline.
 
-;;; Show matching parentheses.
+(display-time-mode t)  ; Time
+(line-number-mode t)   ; Line number
+(column-number-mode t) ; Column number
+
+;; Highlight matching parenthesis or bracket.
+
 (show-paren-mode t)
 
-;;; Use ido-mode everywhere.
+;; Use ido-mode for finding files and folders quickly.
+;; It has fuzzy search. Example: `M-x mgstus` will likely run magit-status.
+;; C-s to go forward in list, C-r to to backwards.
+;; Press C-e while in Ido to disable it temporarily.
+
 (ido-mode t)
 (ido-everywhere t)
 (setq ido-show-dot-for-dired t)
 
+;; Prevent clutter by not adding newly installed packages to init.el.
+;; Your packages will still be loaded automatically.
+
+(el-patch-defun package--save-selected-packages (&optional value)
+  "Set and save `package-selected-packages' to VALUE."
+  (when value
+    (setq package-selected-packages value))
+  (el-patch-remove
+    (if after-init-time
+        (let ((save-silently inhibit-message))
+          (customize-save-variable 'package-selected-packages package-selected-packages))
+      (add-hook 'after-init-hook #'package--save-selected-packages))))
+
+;; Make backspace work like you would expect when searching,
+;; i.e. delete a character from the search string instead of going to the
+;; previous result.
+
+(define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char)
+
+;; Hide dotfiles in dired by default. Toggle using `C-c h`.
+
+(defun dired-hidden-files-hook ()
+  (dired-hide-dotfiles-mode)
+  (define-key dired-mode-map (kbd "C-c h") #'dired-hide-dotfiles-mode))
+(add-hook 'dired-mode-hook #'dired-hidden-files-hook)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Custom keybindings and plugins.
+;;; Installed packages & their configuration.
 ;;;
 
-;;; Slime setup (LISP interactive shell).
+;; Slime is a REPL for lisp. Assumes you have SBCL but any LISP
+;; implementation works.
+
 (setq inferior-lisp-program "/usr/bin/sbcl")
 (setq slime-contribs '(slime-fancy))
 
-;;; Smex (M-x enhancement, like Ido).
+;; Smex is like Ido but for running commands. Has fuzzy search.
+
 (autoload 'smex "smex")
 (global-set-key (kbd "M-x") 'smex)
 (setq smex-save-file "~/.emacs.d/plugin-data/smex/smex-items")
 
-;;; Toggle show hidden files with C-c h.
-(require 'dired-x)
-(setq dired-omit-files "^\\...+$")
-(add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
-(define-key dired-mode-map (kbd "C-c h") 'dired-omit-mode)
-
-;;; Request sudo password if file requires SU permissions.
-(defadvice ido-find-file (after find-file-sudo activate)
-  (unless (and buffer-file-name
-               (file-writable-p buffer-file-name))
-    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Indentation settings.
+;;; Indentation and language specific settings.
 ;;;
 
-;;; Don't use tabs.
+;; Use spaces over tabs.
+
 (setq-default indent-tabs-mode nil)
 
-;;; If someone uses tabs, display them as 2 spaces.
+;; Display tab character as 2 spaces wide. (They are still tabs.)
+
 (setq tab-width 2)
 
-;;; Web-mode indentation settings (2 spaces).
+;; Mode-specific indentation settings.
+
 (setq web-mode-markup-indent-offset 2)
 (setq web-mode-css-indent-offset 2)
 (setq web-mode-code-indent-offset 2)
-
-;;; Javascript-mode indentation settings (2 spaces).
 (setq js-indent-level 2)
 
+;; Use ESLINT for Javascript if installed on the system.
+
+(eval-after-load 'js-mode
+  '(add-hook
+    'js-mode-hook
+    (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
+(eval-after-load 'js2-mode
+  '(add-hook
+    'js2-mode-hook
+    (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Themes and fonts.
 ;;;
 
-;;; Custom theme directory
+;; Treat all themes as safe
+;; Caution: Themes can execute arbitrary code.
+
+(custom-set-variables
+ '(custom-safe-themes t))
+
+;; Custom theme directory. If you download a theme from the internet, place
+;; it's .el file here. Only use themes from trusted sources.
+
 (setq custom-theme-directory "~/.emacs.d/themes")
 (add-to-list 'load-path "~/.emacs.d/themes")
 
-;;; Treat all themes as safe
-(custom-set-variables
- '(custom-safe-themes t)
- '(magit-item-highlight-face (quote bold)))
+;; In GUI Emacs, use Tomorrow Night theme by Chris Kempson.
 
-;;; Theme
-(load-theme 'tomorrow-night t)
+(when (display-graphic-p)
+  (require 'color-theme-tomorrow)
+  (color-theme-tomorrow--define-theme night))
 
-;;; Custom colors & fonts
-(lisp-extra-font-lock-global-mode t)
-(custom-set-faces
- '(default ((t (:inherit nil :stipple nil :background "#1d1f21" :foreground "#c5c8c6" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 105 :width normal :foundry "unknown" :family "DejaVu Sans Mono")))))
+;; Font & settings. Add your favourite font instead of DejaVu Sans Mono.
+
+(set-face-attribute 'default nil
+                    :font "DejaVu Sans Mono"
+                    :foreground "#c5c8c6"
+                    :background "#222222"
+                    :height 105)
