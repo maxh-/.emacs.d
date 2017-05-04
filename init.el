@@ -26,8 +26,7 @@
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 
-;; Get the environment from user's shell.
-;; Useful for getting Emac's eshell to read from your $PATH.
+;; Import the user's `$PATH` variable into eshell.
 
 (exec-path-from-shell-initialize)
 
