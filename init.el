@@ -49,22 +49,21 @@
 
 ;; Show some useful info in modeline.
 
-(display-time-mode t)  ; Time
-(line-number-mode t)   ; Line number
-(column-number-mode t) ; Column number
+(display-time-mode t)
+(line-number-mode t)
+(column-number-mode t)
 
 ;; Highlight matching parenthesis or bracket.
 
 (show-paren-mode t)
 
-;; Use ido-mode for finding files and folders quickly.
-;; It has fuzzy search. Example: `M-x mgstus` will likely run magit-status.
-;; C-s to go forward in list, C-r to to backwards.
-;; Press C-e while in Ido to disable it temporarily.
+;; Enable ido-mode for opening files and folders.
+;; Cycle through results C-s and C-r. Disable with C-e.
 
 (ido-mode t)
 (ido-everywhere t)
 (setq ido-show-dot-for-dired t)
+(setq ido-flex-matching t)
 
 ;; Prevent clutter by not adding newly installed packages to init.el.
 ;; Your packages will still be loaded automatically.
@@ -94,48 +93,71 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Installed packages & their configuration.
+;;; Package configuration and key bindings.
 ;;;
 
-;; Slime is a REPL for lisp. Assumes you have SBCL but any LISP
-;; implementation works.
+;; Slime: Interactive lisp shell.
 
-(setq inferior-lisp-program "/usr/bin/sbcl")
+(setq inferior-lisp-program "/usr/bin/sbcl") ; path to lisp binary
 (setq slime-contribs '(slime-fancy))
 
-;; Smex is like Ido but for running commands. Has fuzzy search.
+;; Smex: Replaces M-x with an Ido-like interface.
+;; Cycle through results C-s and C-r.
 
 (autoload 'smex "smex")
 (global-set-key (kbd "M-x") 'smex)
 (setq smex-save-file "~/.emacs.d/plugin-data/smex/smex-items")
+
+;; js2-mode: Improved JS major mode.
+
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
+;; js-doc: Generate oilerplate JSDoc comments.
+
+(add-hook 'js2-mode-hook
+          #'(lambda ()
+              (define-key js2-mode-map "\C-ci" 'js-doc-insert-function-doc)
+              (define-key js2-mode-map "@" 'js-doc-insert-tag)))
+
+;; nodejs-repl: interactive nodejs REPL.
+;; Load current file with C-c r.
+
+(defun nodejs-repl-load-buffer-file ()
+  (interactive)
+  (let ((fn (buffer-file-name )))
+    (nodejs-repl-load-file fn)))
+
+(add-hook 'js2-mode-hook
+          #'(lambda ()
+              (define-key js2-mode-map "\C-cr" 'nodejs-repl-load-buffer-file)))
+     
+
+;; eslint-fix: Show eslint warnings when saving Javascript files.
+;; eslint needs to be installed on the system.
+
+(add-hook
+ 'js2-mode-hook (lambda () (add-hook 'after-save-hook 'eslint-fix nil t)))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Indentation and language specific settings.
 ;;;
 
-;; Use spaces over tabs. Show tabs as 2 spaces wide. Delete if you prefer tabs.
+;; Prefer 2 spaces for indentation. Display tabs 2 spaces wide.
 
 (setq-default indent-tabs-mode nil)
 (setq tab-width 2)
 
 ;; Mode-specific indentation settings.
 
-(setq web-mode-markup-indent-offset 2)  ; for web-mode
-(setq web-mode-css-indent-offset 2)     ; ...
-(setq web-mode-code-indent-offset 2)    ; ...
-(setq js-indent-level 2)                ; for javascript
+(setq web-mode-markup-indent-offset 2)
+(setq web-mode-css-indent-offset 2)
+(setq web-mode-code-indent-offset 2)
+(setq js-indent-level 2)
 
-;; Use ESLINT for Javascript if installed on the system.
+;; Show style warnings in js files. (requires eslint)
 
-(eval-after-load 'js-mode
-  '(add-hook
-    'js-mode-hook
-    (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
-(eval-after-load 'js2-mode
-  '(add-hook
-    'js2-mode-hook
-    (lambda () (add-hook 'after-save-hook 'eslint-fix nil t))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -148,28 +170,25 @@
                     :font "DejaVu Sans Mono"
                     :foreground "#c5c8c6"
                     :background "#222222"
-                    :height 105)
+                    :height 115)
 
-;; Treat all themes as safe
-;; Caution: Themes can execute arbitrary code.
+;; Allow use of custom themes.
 
-(custom-set-variables
- '(custom-safe-themes t))
+(setq custom-safe-themes t)
 
-;; Custom theme directory. If you download a theme from the internet, place
-;; it's .el file here. Only use themes from trusted sources.
+;; Custom theme directory.
 
 (setq custom-theme-directory "~/.emacs.d/themes")
 (add-to-list 'load-path "~/.emacs.d/themes")
 
-;; Set theme to Tomorrow Night theme by Chris Kempson.
+;; Set theme to 'Tomorrow Night'. <http://github.com/chriskempson>
 
 (require 'color-theme-tomorrow)
 (color-theme-tomorrow--define-theme night)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Custom global keybindings.
+;;; Global keybindings.
 ;;;
 
 ;; Open an eshell in a new window below the current one with C-c C-t.
@@ -182,9 +201,40 @@
          (eshell)))
 (global-set-key (kbd "C-c t") 'open-terminal-below)
 
-;; Switch windows with C-c h/j/k/l (vim-like movement)
+;; Switch windows with C-c C-[h/j/k/l] (vim-like movement)
 
-(global-set-key (kbd "C-c h") 'windmove-left)
-(global-set-key (kbd "C-c l") 'windmove-right)
-(global-set-key (kbd "C-c k") 'windmove-up)
-(global-set-key (kbd "C-c j") 'windmove-down)
+(global-set-key (kbd "C-c C-h") 'windmove-left)
+(global-set-key (kbd "C-c C-l") 'windmove-right)
+(global-set-key (kbd "C-c C-k") 'windmove-up)
+(global-set-key (kbd "C-c C-j") 'windmove-down)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Custom elisp files
+;;;
+
+;; path for elisp files
+
+(add-to-list 'load-path "~/.emacs.d/elisp")
+
+;; auto-scroll-mode: enable autoscroll in a buffer
+
+(require 'auto-scroll)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Space for autogenerated code.
+;;;
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(js2-strict-trailing-comma-warning nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
