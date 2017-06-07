@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2016 Neri Marschik
 ;; This package uses the MIT License.
-;; See the LICENSE file.
+;; See the LICENSE file
 
 ;; Author: Neri Marschik <marschik_neri@cyberagent.co.jp>
 ;; Version: 1.0
@@ -34,7 +34,7 @@
   "Format the current file with ESLint."
   (interactive)
   (if (executable-find "eslint")
-      (progn (call-process "eslint" nil "*ESLint Errors*" nil "--fix" buffer-file-name)
+      (progn (call-process "eslint" nil "*ESLint Errors*" t "--fix" buffer-file-name)
              (revert-buffer t t t))
     (message "ESLint not found.")))
 
