@@ -13,90 +13,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Packages.
-;;;
-
-(use-package base16-theme
-  :ensure t
-  :config
-  (setq custom-safe-themes t)
-  (load-theme 'base16-tomorrow-night))
-
-(use-package exec-path-from-shell :ensure t)
-
-(use-package org :defer t :ensure t)
-
-(use-package flycheck :ensure t :defer t)
-
-(use-package dired-hide-dotfiles
-  :ensure t
-  :defer t
-  :bind (:map dired-mode-map ("C-c ." . dired-hide-dotfiles-mode))
-  :init
-  (require 'dired)
-  (add-hook 'dired-mode-hook #'dired-hide-dotfiles-mode))
-
-(use-package immortal-scratch
-  :ensure t
-  :config
-  (immortal-scratch-mode t))
-
-(use-package js-doc :ensure t :mode "\\.js\\'")
-
-(use-package js3-mode
-  :ensure t
-  :mode "\\.js\\'"
-  :config
-  (add-hook 'after-save-hook 'eslint-fix))
-
-(use-package json-mode :ensure t :mode "\\.json\\'")
-
-(use-package nodejs-repl :ensure t :defer t)
-
-(use-package eslint-fix
-  :if (executable-find "eslint")
-  :ensure t
-  :defer t)
-
-(use-package lisp-extra-font-lock
-  :ensure t
-  :commands (lisp-extra-font-lock-mode))
-
-(use-package lua-mode :ensure t :mode "\\.lua\\'")
-
-(use-package magit :ensure t :defer t)
-
-(use-package php-mode :ensure t :mode "\\.php\\'")
-
-(use-package sass-mode :ensure t :mode "\\.scss\\'")
-
-(use-package slime
-  :if (executable-find "sbcl")
-  :ensure t
-  :defer t
-  :config
-  (defvar inferior-lisp-program (executable-find "sbcl"))
-  (setq slime-contribs '(slime-fancy)))
-
-(use-package smex
-  :ensure t
-  :bind* ("M-x" . smex)
-  :init
-  (global-set-key (kbd "M-x") 'smex)
-  (defvar smex-save-file (concat user-emacs-directory "plugin-data/smex/smex-items")))
-
-(use-package sudo-edit :ensure t :defer t)
-
-(use-package web-mode :ensure t :defer t)
-
-(use-package powerline
-  :ensure t
-  :config
-  (powerline-center-theme))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; General config.
+;;; Editor config.
 ;;;
 
 ;; Remove bling.
@@ -183,5 +100,84 @@
          (other-window 1)
          (eshell)))
 (global-set-key (kbd "C-c t") 'open-terminal-below)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Packages.
+;;;
+
+(use-package base16-theme
+  :ensure t
+  :config
+  (setq custom-safe-themes t)
+  (load-theme 'base16-tomorrow-night))
+
+(use-package exec-path-from-shell :ensure t)
+
+(use-package org :defer t :ensure t)
+
+(use-package flycheck :ensure t :defer t)
+
+(use-package dired-hide-dotfiles
+  :ensure t
+  :defer t
+  :bind (:map dired-mode-map ("C-c ." . dired-hide-dotfiles-mode))
+  :init
+  (require 'dired)
+  (add-hook 'dired-mode-hook #'dired-hide-dotfiles-mode))
+
+(use-package immortal-scratch
+  :ensure t
+  :config
+  (immortal-scratch-mode t))
+
+(use-package js-doc :ensure t :mode "\\.js\\'")
+
+(use-package js3-mode
+  :ensure t
+  :mode "\\.js\\'"
+  :config
+  (add-hook 'after-save-hook 'eslint-fix))
+
+(use-package json-mode :ensure t :mode "\\.json\\'")
+
+(use-package nodejs-repl :ensure t :defer t)
+
+(use-package eslint-fix
+  :if (executable-find "eslint")
+  :ensure t
+  :defer t)
+
+(use-package lua-mode :ensure t :mode "\\.lua\\'")
+
+(use-package magit :ensure t :defer t)
+
+(use-package php-mode :ensure t :mode "\\.php\\'")
+
+(use-package sass-mode :ensure t :mode "\\.scss\\'")
+
+(use-package slime
+  :if (executable-find "sbcl")
+  :ensure t
+  :defer t
+  :config
+  (defvar inferior-lisp-program (executable-find "sbcl"))
+  (setq slime-contribs '(slime-fancy)))
+
+(use-package smex
+  :ensure t
+  :bind* ("M-x" . smex)
+  :init
+  (global-set-key (kbd "M-x") 'smex)
+  (defvar smex-save-file (concat user-emacs-directory "plugin-data/smex/smex-items")))
+
+(use-package sudo-edit :ensure t :defer t)
+
+(use-package web-mode :ensure t :defer t)
+
+(use-package powerline
+  :ensure t
+  :config
+  (powerline-center-theme))
 
 ;;; init.el ends here
