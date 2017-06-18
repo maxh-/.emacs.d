@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "sudo-edit" "sudo-edit.el" (22843 49349 588571
-;;;;;;  611000))
+;;;### (autoloads nil "sudo-edit" "sudo-edit.el" (22854 45846 219011
+;;;;;;  412000))
 ;;; Generated autoloads from sudo-edit.el
 
 (autoload 'sudo-edit "sudo-edit" "\

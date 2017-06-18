@@ -4,7 +4,7 @@
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
 ;;;### (autoloads nil "dired-hide-dotfiles" "dired-hide-dotfiles.el"
-;;;;;;  (22795 31520 476357 579000))
+;;;;;;  (22854 45808 586426 735000))
 ;;; Generated autoloads from dired-hide-dotfiles.el
 
 (autoload 'dired-hide-dotfiles-mode "dired-hide-dotfiles" "\

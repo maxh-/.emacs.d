@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "php-current" "php-current.el" (22843 49357
-;;;;;;  804371 490000))
+;;;### (autoloads nil "php-current" "php-current.el" (22854 45833
+;;;;;;  816119 636000))
 ;;; Generated autoloads from php-current.el
 
 (autoload 'php-current-class "php-current" "\
@@ -19,8 +19,8 @@ Insert current namespace if cursor in in namespace context.
 
 ;;;***
 
-;;;### (autoloads nil "php-mode" "php-mode.el" (22843 49357 896369
-;;;;;;  252000))
+;;;### (autoloads nil "php-mode" "php-mode.el" (22854 45833 888113
+;;;;;;  152000))
 ;;; Generated autoloads from php-mode.el
 
 (let ((loads (get 'php 'custom-loads))) (if (member '"php-mode" loads) nil (put 'php 'custom-loads (cons '"php-mode" loads))))
@@ -50,7 +50,7 @@ Major mode for editing PHP code.
 ;;;;;;  "php-exif.el" "php-ext.el" "php-filesystem.el" "php-gd.el"
 ;;;;;;  "php-math.el" "php-mode-pkg.el" "php-pcre.el" "php-regex.el"
 ;;;;;;  "php-simplexml.el" "php-strings.el" "php-var.el" "php-xmlparser.el"
-;;;;;;  "php-xmlreader.el") (22843 49357 972367 403000))
+;;;;;;  "php-xmlreader.el") (22854 45833 952107 388000))
 
 ;;;***
 

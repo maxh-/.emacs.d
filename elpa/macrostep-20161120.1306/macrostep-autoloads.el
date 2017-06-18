@@ -3,8 +3,8 @@
 ;;; Code:
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
-;;;### (autoloads nil "macrostep" "macrostep.el" (22783 22146 926046
-;;;;;;  618000))
+;;;### (autoloads nil "macrostep" "macrostep.el" (22854 45837 211814
+;;;;;;  556000))
 ;;; Generated autoloads from macrostep.el
 
 (autoload 'macrostep-mode "macrostep" "\
@@ -36,8 +36,8 @@ behaviors.
 
 ;;;***
 
-;;;### (autoloads nil "macrostep-c" "macrostep-c.el" (22783 22146
-;;;;;;  918046 779000))
+;;;### (autoloads nil "macrostep-c" "macrostep-c.el" (22854 45837
+;;;;;;  207814 914000))
 ;;; Generated autoloads from macrostep-c.el
 
 (autoload 'macrostep-c-mode-hook "macrostep-c" "\
@@ -49,8 +49,8 @@ behaviors.
 
 ;;;***
 
-;;;### (autoloads nil nil ("macrostep-pkg.el") (22783 22146 910046
-;;;;;;  940000))
+;;;### (autoloads nil nil ("macrostep-pkg.el") (22854 45837 199815
+;;;;;;  631000))
 
 ;;;***
 

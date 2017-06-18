@@ -4,7 +4,7 @@
 (add-to-list 'load-path (directory-file-name (or (file-name-directory #$) (car load-path))))
 
 ;;;### (autoloads nil "lisp-extra-font-lock" "lisp-extra-font-lock.el"
-;;;;;;  (22783 22182 641336 846000))
+;;;;;;  (22854 45822 129179 392000))
 ;;; Generated autoloads from lisp-extra-font-lock.el
 
 (defvar lisp-extra-font-lock-modes '(emacs-lisp-mode lisp-mode) "\
