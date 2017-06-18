@@ -47,9 +47,6 @@
   (write-region "" nil custom-file))
 (load custom-file)
 
-;; Get environment variables from user's shell.
-(exec-path-from-shell-initialize)
-
 ;; Cycle through windows with <C-return>.
 (bind-key* "<C-return>" 'other-window)
 
@@ -83,9 +80,15 @@
              '("*Help*" display-buffer-same-window))
 
 ;; Font.
-(set-face-attribute 'default nil
-                    :font "DejaVu Sans Mono"
-                    :height 115)
+(cond
+ ((find-font (font-spec :name "DejaVu Sans Mono"))
+  (set-frame-font "DejaVu Sans Mono-12"))
+ ((find-font (font-spec :name "inconsolata"))
+  (set-frame-font "inconsolata-12"))
+ ((find-font (font-spec :name "Lucida Console"))
+  (set-frame-font "Lucida Console-12"))
+ ((find-font (font-spec :name "courier"))
+  (set-frame-font "courier-12")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -112,7 +115,9 @@
   (setq custom-safe-themes t)
   (load-theme 'base16-tomorrow-night))
 
-(use-package exec-path-from-shell :ensure t)
+(use-package exec-path-from-shell
+  :ensure t
+  :commands (exec-path-from-shell-initialize))
 
 (use-package org :defer t :ensure t)
 
