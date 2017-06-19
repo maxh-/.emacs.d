@@ -117,7 +117,8 @@
 
 (use-package exec-path-from-shell
   :ensure t
-  :commands (exec-path-from-shell-initialize))
+  :config
+  (exec-path-from-shell-initialize))
 
 (use-package org :defer t :ensure t)
 
@@ -140,11 +141,10 @@
 
 (use-package js3-mode
   :ensure t
-  :mode "\\.js\\'"
+  :mode ("\\.js\\'" "\\.json\\'")
   :config
-  (add-hook 'after-save-hook 'eslint-fix))
-
-(use-package json-mode :ensure t :mode "\\.json\\'")
+  (add-hook 'after-save-hook 'eslint-fix)
+  (setq js3-indent-level 2))
 
 (use-package nodejs-repl :ensure t :defer t)
 
@@ -174,7 +174,8 @@
   :bind* ("M-x" . smex)
   :init
   (global-set-key (kbd "M-x") 'smex)
-  (defvar smex-save-file (concat user-emacs-directory "plugin-data/smex/smex-items")))
+  (defvar smex-save-file
+    (concat user-emacs-directory "plugin-data/smex/smex-items")))
 
 (use-package sudo-edit :ensure t :defer t)
 
@@ -184,5 +185,11 @@
   :ensure t
   :config
   (powerline-center-theme))
+
+(use-package smooth-scroll
+  :ensure t
+  :config
+  (smooth-scroll-mode t)
+  (setq smooth-scroll/vscroll-step-size 1))
 
 ;;; init.el ends here
