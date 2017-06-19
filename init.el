@@ -143,7 +143,6 @@
   :ensure t
   :mode ("\\.js\\'" "\\.json\\'")
   :config
-  (add-hook 'after-save-hook 'eslint-fix)
   (setq js3-indent-level 2))
 
 (use-package nodejs-repl :ensure t :defer t)
