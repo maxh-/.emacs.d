@@ -178,17 +178,27 @@
 
 (use-package sudo-edit :ensure t :defer t)
 
-(use-package web-mode :ensure t :defer t)
+(use-package web-mode
+  :ensure t
+  :defer t
+  :config
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2))
 
 (use-package powerline
   :ensure t
   :config
-  (powerline-center-theme))
+  (powerline-center-theme)
 
 (use-package smooth-scroll
   :ensure t
   :config
   (smooth-scroll-mode t)
   (setq smooth-scroll/vscroll-step-size 1))
+
+(use-package css-mode
+  :config
+  (setq css-indent-offset 2))
 
 ;;; init.el ends here
