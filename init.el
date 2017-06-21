@@ -189,7 +189,7 @@
 (use-package powerline
   :ensure t
   :config
-  (powerline-center-theme)
+  (powerline-center-theme))
 
 (use-package smooth-scroll
   :ensure t
