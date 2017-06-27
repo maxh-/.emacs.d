@@ -95,7 +95,7 @@
 ;;; Global keybindings.
 ;;;
 
-;; Open an eshell in a new window below the current one with C-c C-t.
+;; Open an eshell in a new window below the current one with C-c t.
 (defun open-terminal-below ()
   "Split the window vertically and open a terminal below it."
   (interactive)
