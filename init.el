@@ -104,6 +104,9 @@
          (eshell)))
 (global-set-key (kbd "C-c t") 'open-terminal-below)
 
+;; Toggle fullscreen with C-c f.
+(global-set-key (kbd "C-c f") 'toggle-frame-maximized)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Packages.
