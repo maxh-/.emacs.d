@@ -47,9 +47,6 @@
   (write-region "" nil custom-file))
 (load custom-file)
 
-;; Cycle through windows with <C-return>.
-(bind-key* "<C-return>" 'other-window)
-
 ;; Use `ibuffer' for listing buffers.
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (add-hook 'ibuffer-mode-hook (lambda () (ibuffer-auto-mode 1)))
@@ -92,20 +89,38 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Global keybindings.
+;;; Custom functions and macros.
 ;;;
 
-;; Open an eshell in a new window below the current one with C-c t.
 (defun open-terminal-below ()
   "Split the window vertically and open a terminal below it."
   (interactive)
   (progn (split-window-below)
          (other-window 1)
          (eshell)))
+
+(defun defun-lambda (interactivep &rest body)
+  
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;
+;;; Global keybindings.
+;;;
+
+;; Open an eshell under current window.
 (global-set-key (kbd "C-c t") 'open-terminal-below)
 
 ;; Toggle fullscreen with C-c f.
 (global-set-key (kbd "C-c f") 'toggle-frame-maximized)
+
+;; Go to next/previous window with C-return and C-S-return
+(bind-key* "<C-return>" (lambda () (interactive) (other-window 1)))
+(bind-key* "<C-S-return>" (lambda () (interactive) (other-window -1)))
+
+(funcall #'other-window -1)
+
+(other-window -1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
