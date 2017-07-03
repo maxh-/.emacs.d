@@ -38,6 +38,11 @@
 ;; Scroll single lines.
 (setq scroll-step 1)
 
+;; Default indentation settings.
+(setq-default indent-tabs-mode nil)
+(setq tab-width 2)
+(defvaralias 'c-basic-offset 'tab-width)
+
 ;; Make backspace work like expected when searching.
 (define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char)
 
@@ -131,7 +136,13 @@
   :ensure t
   :config
   (setq custom-safe-themes t)
-  (load-theme 'base16-tomorrow-night))
+  (load-theme 'base16-tomorrow-night)
+  (set-background-color "#20242D")
+  (set-foreground-color "#dddddd")
+  (set-face-foreground 'mode-line "#cccccc")
+  (set-face-background 'mode-line "#2B3240")
+  (set-face-background 'modeline-inactive "#20242D")
+  (set-face-attribute 'fringe nil :background nil))
 
 (use-package exec-path-from-shell
   :ensure t
@@ -204,10 +215,10 @@
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2))
 
-(use-package powerline
-  :ensure t
-  :config
-  (powerline-center-theme))
+;; (use-package powerline
+;;   :ensure t
+;;   :config
+;;   (powerline-center-theme))
 
 (use-package smooth-scroll
   :ensure t
