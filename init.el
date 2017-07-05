@@ -215,11 +215,6 @@
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2))
 
-;; (use-package powerline
-;;   :ensure t
-;;   :config
-;;   (powerline-center-theme))
-
 (use-package smooth-scroll
   :ensure t
   :config
@@ -229,5 +224,19 @@
 (use-package css-mode
   :config
   (setq css-indent-offset 2))
+
+(use-package markdown-mode
+  :ensure t
+  :defer t)
+
+(use-package org
+  :ensure t
+  :mode (("\\.org$" . org-mode))
+  :config
+  ;(bind-key* (kbd "M-<return>") org-insert-heading-respect-content)
+  (define-key
+    org-mode-map
+    [remap org-meta-return] 'org-insert-heading-respect-content)
+  (setq org-cycle-separator-lines 1))
 
 ;;; init.el ends here
