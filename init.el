@@ -22,9 +22,11 @@
 (setq inhibit-startup-message t
       inhibit-startup-echo-area-message t)
 (setq ring-bell-function 'ignore)
-(scroll-bar-mode 0)
+(when (display-graphic-p)
+  (scroll-bar-mode 0)
+  (tool-bar-mode 0))
 (menu-bar-mode 0)
-(tool-bar-mode 0)
+
 
 ;; Prompt less.
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -97,53 +99,35 @@
 ;;; Custom functions and macros.
 ;;;
 
-(defun open-terminal ()
-  "Open a terminal in the current window"
-  (interactive)
-  (ansi-term "bash" "Bash"))
-
 (defun open-terminal-below ()
-  "Split the window vertically and open a terminal below."
+  "Split the window vertically and open a terminal below it."
   (interactive)
   (progn (split-window-below)
          (other-window 1)
-         (ansi-term "bash" "Bash")))
+         (eshell)))
 
-(defun open-terminal-right ()
-  "Split the window horizontally and open a terminal to the right."
-  (interactive)
-  (progn (split-window-right)
-         (other-window 1)
-         (ansi-term "bash" "Bash")))
-
-(defun open-dired-here ()
-  "Opens dired in the directory of the active buffer's file"
-  (interactive)
-  (if (buffer-file-name)
-      (dired (file-name-directory (buffer-file-name)))
-    (print "Buffer not visiting a file!")))
+(defun defun-lambda (interactivep &rest body)
+  
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Global keybindings.
 ;;;
 
-;; Open terminals.
-;(bind-key* "C-c t" 'open-terminal)
-(bind-key* "C-c C-t 1" 'open-terminal)
-(bind-key* "C-c C-t 2" 'open-terminal-below)
-(bind-key* "C-c C-t 3" 'open-terminal-right)
+;; Open an eshell under current window.
+(global-set-key (kbd "C-c t") 'open-terminal-below)
 
-;; Toggle frame fullscreen with C-c f.
+;; Toggle fullscreen with C-c f.
 (global-set-key (kbd "C-c f") 'toggle-frame-maximized)
 
 ;; Go to next/previous window with C-return and C-S-return
 (bind-key* "<C-return>" (lambda () (interactive) (other-window 1)))
 (bind-key* "<C-S-return>" (lambda () (interactive) (other-window -1)))
 
-;; Open dired at buffer file location with C-x C-d
-(bind-key* "C-x C-d" 'open-dired-here)
- 
+(funcall #'other-window -1)
+
+(other-window -1)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -154,13 +138,8 @@
   :ensure t
   :config
   (setq custom-safe-themes t)
-  (load-theme 'base16-tomorrow-night)
-  (set-background-color "#20242D")
-  (set-foreground-color "#dddddd")
-  (set-face-foreground 'mode-line "#cccccc")
-  (set-face-background 'mode-line "#2B3240")
-  (set-face-background 'modeline-inactive "#20242D")
-  (set-face-attribute 'fringe nil :background nil))
+  (when (display-graphic-p)
+    (load-theme 'base16-tomorrow-night)))
 
 (use-package exec-path-from-shell
   :ensure t
@@ -171,25 +150,13 @@
 
 (use-package flycheck :ensure t :defer t)
 
-(use-package dired
-  :defer t
-  :bind* (:map dired-mode-map (("u" . (dired-up-directory))))
-  (dired-tree-up 1)
-  :init
-  (require 'dired)
-  (define-key dired-mode-map [remap dired-find-file] 'dired-find-alternate-file)
-  (define-key dired-mode-map "u" (find-alternate-file ".."))
-  )
-
 (use-package dired-hide-dotfiles
   :ensure t
   :defer t
   :bind (:map dired-mode-map ("C-c ." . dired-hide-dotfiles-mode))
   :init
   (require 'dired)
-  (add-hook 'dired-mode-hook #'dired-hide-dotfiles-mode)
-  ;(define-key dired-mode-map [remap dired-up-directory] #'(lambda () (interactive) (find-alternate-file "..")))
-  )
+  (add-hook 'dired-mode-hook #'dired-hide-dotfiles-mode))
 
 (use-package immortal-scratch
   :ensure t
@@ -241,7 +208,7 @@
   :ensure t
   :defer t
   :config
-  (setq web-mode-markup-indent-offset 4)
+  (setq web-mode-markup-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2))
 
@@ -269,9 +236,4 @@
     [remap org-meta-return] 'org-insert-heading-respect-content)
   (setq org-cycle-separator-lines 1))
 
-(use-package vue-mode
-  :ensure t
-  :mode "\\.vue$")
-
 ;;; init.el ends here
-(put 'dired-find-alternate-file 'disabled nil)
