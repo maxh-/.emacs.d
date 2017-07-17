@@ -97,35 +97,53 @@
 ;;; Custom functions and macros.
 ;;;
 
+(defun open-terminal ()
+  "Open a terminal in the current window"
+  (interactive)
+  (ansi-term "bash" "Bash"))
+
 (defun open-terminal-below ()
-  "Split the window vertically and open a terminal below it."
+  "Split the window vertically and open a terminal below."
   (interactive)
   (progn (split-window-below)
          (other-window 1)
-         (eshell)))
+         (ansi-term "bash" "Bash")))
 
-(defun defun-lambda (interactivep &rest body)
-  
-  )
+(defun open-terminal-right ()
+  "Split the window horizontally and open a terminal to the right."
+  (interactive)
+  (progn (split-window-right)
+         (other-window 1)
+         (ansi-term "bash" "Bash")))
+
+(defun open-dired-here ()
+  "Opens dired in the directory of the active buffer's file"
+  (interactive)
+  (if (buffer-file-name)
+      (dired (file-name-directory (buffer-file-name)))
+    (print "Buffer not visiting a file!")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Global keybindings.
 ;;;
 
-;; Open an eshell under current window.
-(global-set-key (kbd "C-c t") 'open-terminal-below)
+;; Open terminals.
+;(bind-key* "C-c t" 'open-terminal)
+(bind-key* "C-c C-t 1" 'open-terminal)
+(bind-key* "C-c C-t 2" 'open-terminal-below)
+(bind-key* "C-c C-t 3" 'open-terminal-right)
 
-;; Toggle fullscreen with C-c f.
+;; Toggle frame fullscreen with C-c f.
 (global-set-key (kbd "C-c f") 'toggle-frame-maximized)
 
 ;; Go to next/previous window with C-return and C-S-return
 (bind-key* "<C-return>" (lambda () (interactive) (other-window 1)))
 (bind-key* "<C-S-return>" (lambda () (interactive) (other-window -1)))
 
-(funcall #'other-window -1)
-
-(other-window -1)
+;; Open dired at buffer file location with C-x C-d
+(bind-key* "C-x C-d" 'open-dired-here)
+ 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -153,13 +171,25 @@
 
 (use-package flycheck :ensure t :defer t)
 
+(use-package dired
+  :defer t
+  :bind* (:map dired-mode-map (("u" . (dired-up-directory))))
+  (dired-tree-up 1)
+  :init
+  (require 'dired)
+  (define-key dired-mode-map [remap dired-find-file] 'dired-find-alternate-file)
+  (define-key dired-mode-map "u" (find-alternate-file ".."))
+  )
+
 (use-package dired-hide-dotfiles
   :ensure t
   :defer t
   :bind (:map dired-mode-map ("C-c ." . dired-hide-dotfiles-mode))
   :init
   (require 'dired)
-  (add-hook 'dired-mode-hook #'dired-hide-dotfiles-mode))
+  (add-hook 'dired-mode-hook #'dired-hide-dotfiles-mode)
+  ;(define-key dired-mode-map [remap dired-up-directory] #'(lambda () (interactive) (find-alternate-file "..")))
+  )
 
 (use-package immortal-scratch
   :ensure t
@@ -211,7 +241,7 @@
   :ensure t
   :defer t
   :config
-  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-markup-indent-offset 4)
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2))
 
@@ -239,4 +269,9 @@
     [remap org-meta-return] 'org-insert-heading-respect-content)
   (setq org-cycle-separator-lines 1))
 
+(use-package vue-mode
+  :ensure t
+  :mode "\\.vue$")
+
 ;;; init.el ends here
+(put 'dired-find-alternate-file 'disabled nil)
