@@ -27,6 +27,9 @@
   (tool-bar-mode 0))
 (menu-bar-mode 0)
 
+;; Get aliases from bash
+(setq shell-file-name "bash")
+(setq shell-command-sw/itch "-ic")
 
 ;; Prompt less.
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -125,10 +128,6 @@
 (bind-key* "<C-return>" (lambda () (interactive) (other-window 1)))
 (bind-key* "<C-S-return>" (lambda () (interactive) (other-window -1)))
 
-(funcall #'other-window -1)
-
-(other-window -1)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Packages.
@@ -139,7 +138,7 @@
   :config
   (setq custom-safe-themes t)
   (when (display-graphic-p)
-    (load-theme 'base16-tomorrow-night)))
+    (load-theme 'base16-monokai)))
 
 (use-package exec-path-from-shell
   :ensure t
