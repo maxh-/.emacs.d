@@ -151,8 +151,6 @@
 
 (use-package org :defer t :ensure t)
 
-(use-package flycheck :ensure t :defer t)
-
 (use-package dired-hide-dotfiles
   :ensure t
   :defer t
