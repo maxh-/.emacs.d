@@ -129,6 +129,9 @@
 ;; Cycle windows.
 (bind-key* (kbd "C-x C-o") (lambda () (interactive) (other-window 1)))
 
+;; Kill buffer+window.
+(bind-key* (kbd "C-x k") 'kill-buffer-and-window)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Packages.
