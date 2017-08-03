@@ -97,6 +97,15 @@
  ((find-font (font-spec :name "courier"))
   (set-frame-font "courier-12")))
 
+;; Modeline color (for non-GUI)
+(set-face-background 'mode-line "brightblack")
+(set-face-background 'mode-line-inactive "colour239")
+
+;; Divider style (for non-GUI)
+(let ((display-table (or standard-display-table (make-display-table))))
+  (set-display-table-slot display-table 'vertical-border (make-glyph-code ?┃))
+  (setq standard-display-table display-table))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Custom functions and macros.
@@ -109,10 +118,6 @@
          (other-window 1)
          (eshell)))
 
-(defun defun-lambda (interactivep &rest body)
-  
-  )
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Global keybindings.
@@ -121,12 +126,8 @@
 ;; Open an eshell under current window.
 (global-set-key (kbd "C-c t") 'open-terminal-below)
 
-;; Toggle fullscreen with C-c f.
-(global-set-key (kbd "C-c f") 'toggle-frame-maximized)
-
-;; Go to next/previous window with C-return and C-S-return
-(bind-key* "<C-return>" (lambda () (interactive) (other-window 1)))
-(bind-key* "<C-S-return>" (lambda () (interactive) (other-window -1)))
+;; Cycle windows.
+(bind-key* (kbd "C-x C-o") (lambda () (interactive) (other-window 1)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -234,5 +235,13 @@
     org-mode-map
     [remap org-meta-return] 'org-insert-heading-respect-content)
   (setq org-cycle-separator-lines 1))
+
+(use-package helm
+  :ensure t
+  :defer t)
+
+(use-package fontawesome
+  :ensure t
+  :defer t)
 
 ;;; init.el ends here
