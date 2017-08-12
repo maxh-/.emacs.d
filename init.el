@@ -12,7 +12,7 @@
   (package-install 'use-package))
 
 ;; Add ~/.emacs.d/elisp to load path.
-(defvar custom-elisp-folder "~/.emacs.d/elisp")
+(defvar custom-elisp-folder (concat user-emacs-directory "elisp"))
 (when (file-exists-p custom-elisp-folder)
   (add-to-list 'load-path custom-elisp-folder))
 
