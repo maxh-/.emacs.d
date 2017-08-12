@@ -11,6 +11,11 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+;; Add ~/.emacs.d/elisp to load path.
+(defvar custom-elisp-folder "~/.emacs.d/elisp")
+(when (file-exists-p custom-elisp-folder)
+  (add-to-list 'load-path custom-elisp-folder))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Editor config.
@@ -97,14 +102,11 @@
  ((find-font (font-spec :name "courier"))
   (set-frame-font "courier-12")))
 
-;; Modeline color (for non-GUI)
-(set-face-background 'mode-line "brightblack")
-(set-face-background 'mode-line-inactive "colour239")
-
-;; Divider style (for non-GUI)
-(let ((display-table (or standard-display-table (make-display-table))))
-  (set-display-table-slot display-table 'vertical-border (make-glyph-code ?┃))
-  (setq standard-display-table display-table))
+;; Fix ugly window divider (for non-GUI)
+(when (not (display-graphic-p))
+  (let ((display-table (or standard-display-table (make-display-table))))
+    (set-display-table-slot display-table 'vertical-border (quote #x2503))
+    (setq standard-display-table display-table)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -129,7 +131,7 @@
 ;; Cycle windows.
 (bind-key* (kbd "C-x C-o") (lambda () (interactive) (other-window 1)))
 
-;; Kill buffer+window.
+;; Kill buffer+window when killing a buffer.
 (bind-key* (kbd "C-x k") 'kill-buffer-and-window)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -141,23 +143,33 @@
   :ensure t
   :config
   (setq custom-safe-themes t)
-  (when (display-graphic-p)
-    (load-theme 'base16-monokai)))
+  (load-theme 'base16-ocean t)
+  (when (not (display-graphic-p))
+    ;; Color fixes for 256-color terminals.
+    (set-face-background 'mode-line "color-235")
+    (set-face-foreground 'mode-line "color-253")
+    (set-face-background 'mode-line-inactive "color-237")
+    (set-face-foreground 'mode-line-inactive "color-245")
+    (set-face-foreground 'font-lock-comment-delimiter-face "gray")
+    (set-face-background 'region "color-245")
+    (set-face-foreground 'region "231")
+    (setq mode-line-end-spaces nil)))
 
 (use-package exec-path-from-shell
   :ensure t
   :config
   (exec-path-from-shell-initialize))
 
-(use-package org :defer t :ensure t)
+(use-package org :ensure t :mode "\\.org\\'")
 
 (use-package dired-hide-dotfiles
   :ensure t
   :defer t
   :bind (:map dired-mode-map ("C-c ." . dired-hide-dotfiles-mode))
   :init
-  (require 'dired)
-  (add-hook 'dired-mode-hook #'dired-hide-dotfiles-mode))
+  ;;(require 'dired)
+  (add-hook 'dired-mode-hook #'dired-hide-dotfiles-mode)
+  (add-hook 'dired-mode-hook #'dired-async-mode))
 
 (use-package immortal-scratch
   :ensure t
@@ -166,11 +178,11 @@
 
 (use-package js-doc :ensure t :mode "\\.js\\'")
 
-(use-package js3-mode
+(use-package js2-mode
   :ensure t
   :mode ("\\.js\\'" "\\.json\\'")
   :config
-  (setq js3-indent-level 2))
+  (setq js2-indent-level 2))
 
 (use-package nodejs-repl :ensure t :defer t)
 
@@ -237,12 +249,15 @@
     [remap org-meta-return] 'org-insert-heading-respect-content)
   (setq org-cycle-separator-lines 1))
 
-(use-package helm
-  :ensure t
-  :defer t)
+(use-package helm :ensure t :defer t)
 
-(use-package fontawesome
-  :ensure t
-  :defer t)
+(use-package fontawesome :ensure t :defer t)
+
+(use-package paredit :ensure t :defer t)
+
+(use-package async
+  :ensure t)
+
+
 
 ;;; init.el ends here
