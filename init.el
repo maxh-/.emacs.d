@@ -92,15 +92,7 @@
              '("*Help*" display-buffer-same-window))
 
 ;; Font.
-(cond
- ((find-font (font-spec :name "DejaVu Sans Mono"))
-  (set-frame-font "DejaVu Sans Mono-12"))
- ((find-font (font-spec :name "inconsolata"))
-  (set-frame-font "inconsolata-12"))
- ((find-font (font-spec :name "Lucida Console"))
-  (set-frame-font "Lucida Console-12"))
- ((find-font (font-spec :name "courier"))
-  (set-frame-font "courier-12")))
+
 
 ;; Fix ugly window divider (for non-GUI)
 (when (not (display-graphic-p))
@@ -143,9 +135,8 @@
   :ensure t
   :config
   (setq custom-safe-themes t)
-  (load-theme 'base16-ocean t)
+  (load-theme 'base16-ocean)
   (when (not (display-graphic-p))
-    ;; Color fixes for 256-color terminals.
     (set-face-background 'mode-line "color-235")
     (set-face-foreground 'mode-line "color-253")
     (set-face-background 'mode-line-inactive "color-237")
@@ -153,21 +144,25 @@
     (set-face-foreground 'font-lock-comment-delimiter-face "gray")
     (set-face-background 'region "color-245")
     (set-face-foreground 'region "231")
-    (setq mode-line-end-spaces nil)))
+    (setq mode-line-end-spaces nil))
+  (cond
+   ((find-font (font-spec :name "DejaVu Sans"))
+    (set-frame-font "DejaVu Sans Mono-11"))
+   ((find-font (font-spec :name "inconsolata"))
+    (set-frame-font "inconsolata-12"))
+   ((find-font (font-spec :name "courier"))
+    (set-frame-font "courier-11"))))
 
 (use-package exec-path-from-shell
   :ensure t
   :config
   (exec-path-from-shell-initialize))
 
-(use-package org :ensure t :mode "\\.org\\'")
-
 (use-package dired-hide-dotfiles
   :ensure t
   :defer t
   :bind (:map dired-mode-map ("C-c ." . dired-hide-dotfiles-mode))
   :init
-  ;;(require 'dired)
   (add-hook 'dired-mode-hook #'dired-hide-dotfiles-mode)
   (add-hook 'dired-mode-hook #'dired-async-mode))
 
@@ -235,15 +230,12 @@
   :config
   (setq css-indent-offset 2))
 
-(use-package markdown-mode
-  :ensure t
-  :defer t)
+(use-package markdown-mode :ensure t :defer t)
 
 (use-package org
   :ensure t
-  :mode (("\\.org$" . org-mode))
+  :mode "\\.org\\'"
   :config
-  ;(bind-key* (kbd "M-<return>") org-insert-heading-respect-content)
   (define-key
     org-mode-map
     [remap org-meta-return] 'org-insert-heading-respect-content)
@@ -255,9 +247,6 @@
 
 (use-package paredit :ensure t :defer t)
 
-(use-package async
-  :ensure t)
-
-
+(use-package async :ensure t)
 
 ;;; init.el ends here
