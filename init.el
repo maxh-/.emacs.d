@@ -175,9 +175,9 @@
 
 (use-package js2-mode
   :ensure t
-  :mode ("\\.js\\'" "\\.json\\'")
+  :mode ("\\.js\\'")
   :config
-  (setq js2-indent-level 2))
+  (setq js2-basic-offset 2))
 
 (use-package nodejs-repl :ensure t :defer t)
 
@@ -241,9 +241,15 @@
     [remap org-meta-return] 'org-insert-heading-respect-content)
   (setq org-cycle-separator-lines 1))
 
-(use-package helm :ensure t :defer t)
+(use-package helm :ensure t :defer t
+  :init
+  (require 'helm-source))
 
-(use-package fontawesome :ensure t :defer t)
+(use-package fontawesome
+  :ensure t
+  :defer t
+  :init
+  (require 'helm-source))
 
 (use-package paredit :ensure t :defer t)
 
