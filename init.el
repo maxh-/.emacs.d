@@ -66,22 +66,27 @@
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (add-hook 'ibuffer-mode-hook (lambda () (ibuffer-auto-mode 1)))
 
-;;; Display some info in modeline.
+;; Display some info in modeline.
 (display-time-mode t)
 (line-number-mode t)
 (column-number-mode t)
 
-;;; Highlight matching parenthesis or bracket.
+;; Highlight matching parenthesis or bracket.
 (show-paren-mode t)
 
-;;; Use ido-mode for finding files.
+;; Show line numbers in text buffers.
+(setq linum-format "%3d ")
+(add-hook 'text-mode-hook 'linum-mode)
+(add-hook 'prog-mode-hook 'linum-mode)
+
+;; Use ido-mode for finding files.
 (ido-mode t)
 (ido-everywhere t)
 (setq ido-show-dot-for-dired t)
 (setq ido-flex-matching t)
 
 ;; Show folders first in `dired-mode'.
-(setq dired-listing-switches "-aBhl  --group-directories-first")
+
 
 ;; Enable colors in `eshell-mode'.
 (require 'ansi-color)
@@ -91,18 +96,13 @@
 (add-to-list 'display-buffer-alist
              '("*Help*" display-buffer-same-window))
 
-;; Font.
-
-
 ;; Fix ugly window divider (for non-GUI)
 (when (not (display-graphic-p))
-  (let ((display-table (or standard-display-table (make-display-table))))
-    (set-display-table-slot display-table 'vertical-border (quote #x2503))
-    (setq standard-display-table display-table)))
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
-;;; Custom functions and macros.
+;;; Utility functions.
 ;;;
 
 (defun open-terminal-below ()
@@ -112,6 +112,16 @@
          (other-window 1)
          (eshell)))
 
+(defun pick-sensible-font ()
+  "Scans for fonts in order and picks the first match."
+  (cond
+   ((find-font (font-spec :name "DejaVu Sans"))
+    (set-frame-font "DejaVu Sans Mono-11"))
+   ((find-font (font-spec :name "inconsolata"))
+    (set-frame-font "inconsolata-12"))
+   ((find-font (font-spec :name "courier"))
+    (set-frame-font "courier-11"))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Global keybindings.
@@ -120,11 +130,11 @@
 ;; Open an eshell under current window.
 (global-set-key (kbd "C-c t") 'open-terminal-below)
 
-;; Cycle windows.
+;; Cycle through windows with C-x C-o.
 (bind-key* (kbd "C-x C-o") (lambda () (interactive) (other-window 1)))
 
 ;; Kill buffer+window when killing a buffer.
-(bind-key* (kbd "C-x k") 'kill-buffer-and-window)
+(bind-key* (kbd "C-x k") 'kill-buffer-and-window)9
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -134,29 +144,21 @@
 (use-package base16-theme
   :ensure t
   :config
-  (setq custom-safe-themes t)
+  ;;(setq custom-safe-themes t)
   (load-theme 'base16-ocean)
-  (when (not (display-graphic-p))
-    (set-face-background 'mode-line "color-235")
-    (set-face-foreground 'mode-line "color-253")
-    (set-face-background 'mode-line-inactive "color-237")
-    (set-face-foreground 'mode-line-inactive "color-245")
-    (set-face-foreground 'font-lock-comment-delimiter-face "gray")
-    (set-face-background 'region "color-245")
-    (set-face-foreground 'region "231")
-    (setq mode-line-end-spaces nil))
-  (cond
-   ((find-font (font-spec :name "DejaVu Sans"))
-    (set-frame-font "DejaVu Sans Mono-11"))
-   ((find-font (font-spec :name "inconsolata"))
-    (set-frame-font "inconsolata-12"))
-   ((find-font (font-spec :name "courier"))
-    (set-frame-font "courier-11"))))
+  ;; Fonts for GUI-emacs.
+  (when (display-graphic-p)
+    (pick-sensible-font)))
 
 (use-package exec-path-from-shell
   :ensure t
   :config
   (exec-path-from-shell-initialize))
+
+(use-package dired
+  :defer t
+  :init
+  (setq dired-listing-switches "-aBhl  --group-directories-first"))
 
 (use-package dired-hide-dotfiles
   :ensure t
