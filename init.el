@@ -1,5 +1,10 @@
 ;;; init.el --- emacs init file.
-;; Use MELPA package repository.
+
+;;;
+;;; Package management.
+;;;
+
+;; Enable MELPA package repository.
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -15,21 +20,23 @@
 (when (file-exists-p custom-elisp-folder)
   (add-to-list 'load-path custom-elisp-folder))
 
-;;window [class="^.*"] border pixel 1
+;;;
+;;; General editor config.
+;;;
 
-;;;
-;;; General config.
-;;;
+;; Use UTF-8
+(setq default-buffer-file-coding-system 'utf-8-unix)
 
 ;; Remove bling.
 (blink-cursor-mode 0)
-(setq initial-scratch-message "")
-(setq inhibit-startup-message t
-      inhibit-startup-echo-area-message t)
 (setq ring-bell-function 'ignore)
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
 (menu-bar-mode 0)
+(visual-line-mode t)
+(setq initial-scratch-message "")
+(setq inhibit-startup-message t
+      inhibit-startup-echo-area-message t)
 
 ;; Get aliases from bash
 (setq shell-file-name "bash")
@@ -64,7 +71,13 @@
 (add-hook 'text-mode-hook 'linum-mode)
 (add-hook 'prog-mode-hook 'linum-mode)
 
-;; Use ido-mode for finding files.
+;; Style line numbers.
+(fringe-mode '(7 . 4))
+(set-face-attribute 'fringe nil
+                    :foreground (face-foreground 'default)
+                    :background (face-background 'default))
+
+;; Use ido-mode for finding files with `C-x C-f'
 (ido-mode t)
 (ido-everywhere t)
 (setq ido-show-dot-for-dired t)
@@ -220,7 +233,12 @@
   :config
   (require 'smooth-scroll)
   (smooth-scroll-mode)
-  (setq smooth-scroll/vscroll-step-size 2))
+  (setq smooth-scroll/vscroll-step-size 1))
+
+(use-package minibuffer-line
+  :ensure t
+  :config
+  (minibuffer-line-mode t))
 
 ;;;
 ;;; Fonts.
@@ -235,3 +253,4 @@
   (set-frame-font "courier-11")))
 
 ;;; init.el ends here
+
