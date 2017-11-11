@@ -5,7 +5,6 @@ smex-items
 %backup%~
 games
 recentf
-auto-save-alist
 # -*- mode: gitignore; -*-
 *~
 \#*\#
