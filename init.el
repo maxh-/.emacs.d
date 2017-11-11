@@ -15,7 +15,8 @@
 (when (file-exists-p custom-elisp-folder)
   (add-to-list 'load-path custom-elisp-folder))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;window [class="^.*"] border pixel 1
+
 ;;;
 ;;; General config.
 ;;;
@@ -80,7 +81,6 @@
 ;; Use python3 interpeter
 (setq python-shell-interpreter "/usr/bin/python3")
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Utility functions.
 ;;;
@@ -92,7 +92,6 @@
          (other-window 1)
          (eshell)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Global keybindings.
 ;;;
@@ -112,7 +111,6 @@
 (bind-key* "C-x C-k" 'windmove-up)
 (bind-key* "C-x C-h" 'windmove-left)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Packages.
 ;;;
@@ -130,9 +128,11 @@
 
 (use-package dired
   :defer t
+  :bind (:map dired-mode-map ("C-u" . dired-up-directory))
   :init
   ;; Show folders first in dired mode
   (setq dired-listing-switches "-aBhl  --group-directories-first"))
+
 
 (use-package dired-hide-dotfiles
   :ensure t
@@ -222,7 +222,6 @@
   (smooth-scroll-mode)
   (setq smooth-scroll/vscroll-step-size 2))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Fonts.
 ;;;
