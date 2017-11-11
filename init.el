@@ -59,8 +59,8 @@
 (define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char)
 
 ;; Display some info in modeline.
-;; (line-number-mode t)
-;; (column-number-mode t)
+(line-number-mode t)
+(column-number-mode t)
 
 ;; Highlight matching parenthesis or bracket.
 (show-paren-mode t)
@@ -75,9 +75,6 @@
 (ido-everywhere t)
 (setq ido-show-dot-for-dired t)
 (setq ido-flex-matching t)
-
-;; Show folders first in `dired-mode'.
-
 
 ;; Enable colors in `eshell-mode'.
 (require 'ansi-color)
@@ -114,7 +111,13 @@
 (bind-key* (kbd "C-x C-o") (lambda () (interactive) (other-window 1)))
 
 ;; Kill buffer+window when killing a buffer.
-(bind-key* (kbd "C-x k") 'kill-buffer-and-window)9
+(bind-key* (kbd "C-x k") 'kill-buffer-and-window)
+
+;; Vim-style window movement with C-c h/j/k/l
+(bind-key* (kbd "C-c h") 'windmove-left)
+(bind-key* (kbd "C-c j") 'windmove-down)
+(bind-key* (kbd "C-c k") 'windmove-up)
+(bind-key* (kbd "C-c l") 'windmove-right)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -135,6 +138,7 @@
 (use-package dired
   :defer t
   :init
+  ;; Show folders first in dired mode
   (setq dired-listing-switches "-aBhl  --group-directories-first"))
 
 (use-package dired-hide-dotfiles
