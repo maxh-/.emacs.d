@@ -244,14 +244,6 @@
   :config
   (minibuffer-line-mode t))
 
-(use-package beacon
-  :ensure t
-  :config
-  (beacon-mode t))
-
-;; todo:
-;; get beacon mode
-
 ;;;
 ;;; Fonts.
 ;;;
