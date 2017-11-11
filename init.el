@@ -1,7 +1,7 @@
 ;;; init.el --- emacs init file.
 
 ;;;
-;;; Package management.
+;;; Package setup.
 ;;;
 
 ;; Enable MELPA package repository.
@@ -24,8 +24,12 @@
 ;;; General editor config.
 ;;;
 
-;; Use UTF-8
+;; Use UTF-8 encoding
 (setq default-buffer-file-coding-system 'utf-8-unix)
+
+;; Put auto generated elisp in custom folder
+(setq custom-file "~/.emacs-custom.el")
+(load custom-file 'noerror)
 
 ;; Remove bling.
 (blink-cursor-mode 0)
@@ -125,7 +129,7 @@
 (bind-key* "C-x C-h" 'windmove-left)
 
 ;;;
-;;; Packages.
+;;; Third-party packages.
 ;;;
 
 (use-package base16-theme
@@ -240,6 +244,14 @@
   :config
   (minibuffer-line-mode t))
 
+(use-package beacon
+  :ensure t
+  :config
+  (beacon-mode t))
+
+;; todo:
+;; get beacon mode
+
 ;;;
 ;;; Fonts.
 ;;;
@@ -253,4 +265,3 @@
   (set-frame-font "courier-11")))
 
 ;;; init.el ends here
-
