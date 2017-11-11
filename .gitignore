@@ -1,12 +1,12 @@
 ido.last
 session*
 tramp
-eshell/
+eshell
 bookmarks
 smex-items
-elpa/
+elpa
 customize.el
-/%backup%~
+%backup%~
 games
-/helm-doc.org
-/recentf
+helm-doc.org
+recentf
