@@ -1,4 +1,4 @@
- ;;; init.el --- emacs init file.
+;;; init.el --- emacs init file.
 ;; Use MELPA package repository.
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -15,12 +15,17 @@
 (when (file-exists-p custom-elisp-folder)
   (add-to-list 'load-path custom-elisp-folder))
 
-;; Set up Emacs server
-(setq edit-server-url "127.0.0.1")
-(setq server-port 9292)
-(require 'edit-server)
-(edit-server-stop)
-(edit-server-start)
+;; Make custom keybindings take precedence over default ones
+;; (add-hook 'after-load-functions 'my-keys-have-priority)
+
+;; (defun my-keys-have-priority (_file)
+;;   "Try to ensure that my keybindings retain priority over other minor modes.
+
+;; Called via the `after-load-functions' special hook."
+;;   (unless (eq (caar minor-mode-map-alist) 'my-keys-minor-mode)
+;;     (let ((mykeys (assq 'my-keys-minor-mode minor-mode-map-alist)))
+;;       (assq-delete-all 'my-keys-minor-mode minor-mode-map-alist)
+;;       (add-to-list 'minor-mode-map-alist mykeys))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -113,11 +118,11 @@
 ;; Kill buffer+window when killing a buffer.
 (bind-key* (kbd "C-x k") 'kill-buffer-and-window)
 
-;; Vim-style window movement with C-c h/j/k/l
-(bind-key* (kbd "C-c h") 'windmove-left)
-(bind-key* (kbd "C-c j") 'windmove-down)
-(bind-key* (kbd "C-c k") 'windmove-up)
-(bind-key* (kbd "C-c l") 'windmove-right)
+;; Vim-style window movement with C-x C-h/j/k/l
+(bind-key* "C-x C-l" 'windmove-right)
+(bind-key* "C-x C-j" 'windmove-down)
+(bind-key* "C-x C-k" 'windmove-up)
+(bind-key* "C-x C-h" 'windmove-left)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -212,17 +217,22 @@
     [remap org-meta-return] 'org-insert-heading-respect-content)
   (setq org-cycle-separator-lines 1))
 
-;; Smooth scrolling
-(require 'smooth-scroll)
-(smooth-scroll-mode)
-(setq smooth-scroll/vscroll-step-size 1)
+(use-package edit-server
+  :ensure t
+  :config
+  ;; Set up Emacs server
+  (setq edit-server-url "127.0.0.1")
+  (setq  server-port 9292)
+  (require 'edit-server)
+  (edit-server-stop)
+  (edit-server-start))
 
-;; Edit text in Chromium
-(require 'edit-server)
-(edit-server-stop)
-(edit-server-start)
-(add-hook 'edit-server-frame-hook
-          (lambda () (add-hook 'after-save-hook (lambda () (kill-window)) nil t)) nil nil)
+(use-package smooth-scroll
+  :ensure t
+  :config
+  (require 'smooth-scroll)
+  (smooth-scroll-mode)
+  (setq smooth-scroll/vscroll-step-size 2))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -238,3 +248,4 @@
   (set-frame-font "courier-11")))
 
 ;;; init.el ends here
+(put 'magit-clean 'disabled nil)
