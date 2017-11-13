@@ -39,3 +39,4 @@ flycheck_*.el
 .dir-locals.el
 # custom generated code from M-x customize
 .emacs-custom.el
+.python-environments

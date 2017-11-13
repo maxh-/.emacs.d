@@ -1,7 +1,7 @@
 ;;; init.el --- emacs init file.
 
 ;;;
-;;; Package setup.
+;;; Online package repository.
 ;;;
 
 ;; Enable MELPA package repository.
@@ -15,7 +15,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;; Add ~/.emacs.d/elisp to load path.
+;; Autoload custom folder ~/.emacs.d/elisp.
 (defvar custom-elisp-folder (concat user-emacs-directory "elisp"))
 (when (file-exists-p custom-elisp-folder)
   (add-to-list 'load-path custom-elisp-folder))
@@ -27,8 +27,14 @@
 ;; Use UTF-8 encoding
 (setq default-buffer-file-coding-system 'utf-8-unix)
 
+;; Allow custom themes
+(setq custom-safe-themes t)
+
+;; Use visual line wrapping
+(visual-line-mode t)
+
 ;; Put auto generated elisp in custom folder
-(setq custom-file "~/.emacs-custom.el")
+(setq custom-file (concat user-emacs-directory "elisp""~/.emacs-custom.el"))
 (load custom-file 'noerror)
 
 ;; Remove bling.
@@ -98,6 +104,8 @@
 ;; Use python3 interpeter
 (setq python-shell-interpreter "/usr/bin/python3")
 
+;; Resize mode
+
 ;;;
 ;;; Utility functions.
 ;;;
@@ -135,8 +143,12 @@
 (use-package base16-theme
   :ensure t
   :config
-  (setq custom-safe-themes t)
   (load-theme 'base16-ocean))
+
+;; (use-package moe-theme
+;;   :ensure t
+;;   :init
+;;   (load-theme 'moe-dark))
 
 (use-package exec-path-from-shell
   :ensure t
@@ -150,10 +162,8 @@
   ;; Show folders first in dired mode
   (setq dired-listing-switches "-aBhl  --group-directories-first"))
 
-
 (use-package dired-hide-dotfiles
   :ensure t
-  :defer t
   :bind (:map dired-mode-map ("C-c ." . dired-hide-dotfiles-mode))
   :init
   (add-hook 'dired-mode-hook #'dired-hide-dotfiles-mode))
@@ -172,6 +182,13 @@
   :mode ("\\.js\\'")
   :init
   (setq js2-basic-offset 2))
+
+(use-package jedi
+  :ensure t
+  :mode ("\\.py\\")
+  :config
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t))
 
 (use-package lua-mode
   :ensure t
