@@ -144,7 +144,6 @@
   (interactive)
   (dired-at-point "."))
 
-
 ;;;
 ;;; Third-party packages.
 ;;;
@@ -154,10 +153,6 @@
   :config
   (load-theme 'base16-ocean))
 (dired-mode)
-;; (use-package moe-theme
-;;   :ensure t
-;;   :init
-;;   (load-theme 'moe-dark))
 
 (use-package exec-path-from-shell
   :ensure t
