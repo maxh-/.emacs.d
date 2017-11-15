@@ -278,12 +278,6 @@
   :config
   (jedi:ac-setup))
 
-(use-package enwc
-  :ensure t
-  :defer t
-  :init
-  (setq enwc-default-backend 'nm))
-
 (use-package auto-complete
   :ensure t
   :init
