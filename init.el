@@ -80,6 +80,8 @@
 (setq linum-format "%4d ")
 (add-hook 'text-mode-hook 'linum-mode)
 (add-hook 'prog-mode-hook 'linum-mode)
+(add-hook 'conf-windows-mode-hook 'linum-mode)
+(add-hook 'conf-unix-mode-hook 'linum-mode)
 
 ;; Style line numbers.
 (fringe-mode '(7 . 4))
@@ -136,6 +138,13 @@
 (bind-key* "C-x C-k" 'windmove-up)
 (bind-key* "C-x C-h" 'windmove-left)
 
+;; Open dired in the current location using C-x d
+(bind-key* "C-x d" 'open-dired-here)
+(defun open-dired-here ()
+  (interactive)
+  (dired-at-point "."))
+
+
 ;;;
 ;;; Third-party packages.
 ;;;
@@ -144,7 +153,7 @@
   :ensure t
   :config
   (load-theme 'base16-ocean))
-
+(dired-mode)
 ;; (use-package moe-theme
 ;;   :ensure t
 ;;   :init
@@ -180,14 +189,16 @@
 (use-package js2-mode
   :ensure t
   :mode ("\\.js\\'")
-  :init
-  (setq js2-basic-offset 2))
+  :config
+  (setq js2-basic-offset 2)
+  (jedi:ac-setup))
 
 (use-package jedi
   :ensure t
-  :mode ("\\.py\\")
+  :mode  ("\\.py\\'")
   :config
-  (add-hook 'python-mode-hook 'jedi:setup)
+  (add-hook 'python-mode-hook #'jedi:setup)
+  (add-hook 'python-mode-hook #'jedi:ac-setup)
   (setq jedi:complete-on-dot t))
 
 (use-package lua-mode
@@ -254,12 +265,29 @@
   :config
   (require 'smooth-scroll)
   (smooth-scroll-mode)
-  (setq smooth-scroll/vscroll-step-size 1))
+  (setq smooth-scroll/vscroll-step-size 2))
 
 (use-package minibuffer-line
   :ensure t
   :config
   (minibuffer-line-mode t))
+
+(use-package typescript-mode
+  :ensure t
+  :mode "\\.ts\\'"
+  :config
+  (jedi:ac-setup))
+
+(use-package enwc
+  :ensure t
+  :defer t
+  :init
+  (setq enwc-default-backend 'nm))
+
+(use-package auto-complete
+  :ensure t
+  :init
+  (global-auto-complete-mode t))
 
 ;;;
 ;;; Fonts.
