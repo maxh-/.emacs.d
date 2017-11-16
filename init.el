@@ -152,7 +152,6 @@
   :ensure t
   :config
   (load-theme 'base16-ocean))
-(dired-mode)
 
 (use-package exec-path-from-shell
   :ensure t
