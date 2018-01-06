@@ -144,6 +144,15 @@
   (interactive)
   (dired-at-point "."))
 
+;; Run single shell command.
+(bind-key* "C-c s" 'shell-command)
+
+;; Run last shell command again.
+
+(bind-key* "C-c S" (lambda () (interactive)
+                     (shell-command (cadr (assoc 'shell-command command-history)))))
+
+
 ;;;
 ;;; Third-party packages.
 ;;;
