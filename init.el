@@ -276,11 +276,6 @@
   (minibuffer-line-mode t))
 
 
-(use-package auto-complete
-  :ensure t
-  :init
-  (global-auto-complete-mode t))
-
 ;;;
 ;;; Fonts.
 ;;;
