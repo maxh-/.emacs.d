@@ -91,9 +91,11 @@
 
 ;; Use ido-mode for finding files with `C-x C-f'
 (ido-mode t)
+;;(ido-mode t)
 (ido-everywhere t)
 (setq ido-show-dot-for-dired t)
 (setq ido-flex-matching t)
+(setq ido-auto-merge-work-directories-length -1)
 
 ;; Enable colors in `eshell-mode'.
 (require 'ansi-color)
