@@ -275,11 +275,6 @@
   :config
   (minibuffer-line-mode t))
 
-(use-package typescript-mode
-  :ensure t
-  :mode "\\.ts\\'"
-  :config
-  (jedi:ac-setup))
 
 (use-package auto-complete
   :ensure t
