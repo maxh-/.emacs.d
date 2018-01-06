@@ -277,6 +277,12 @@
   :config
   (minibuffer-line-mode t))
 
+(use-package paredit
+  :ensure t
+  :mode ("\\.el\\'")
+  :config
+  (emacs-lisp-mode)
+  (paredit-mode))
 
 ;;;
 ;;; Fonts.
