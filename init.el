@@ -186,16 +186,17 @@
   :config
   (immortal-scratch-mode t))
 
-(use-package js-doc
-  :ensure t
-  :mode "\\.js\\'")
-
 (use-package js2-mode
   :ensure t
   :mode ("\\.js\\'")
   :config
-  (setq js2-basic-offset 2)
-  (jedi:ac-setup))
+  (setq js2-basic-offset 4)
+  (define-key js2-mode-map "\C-ci" 'js-doc-insert-function-doc)
+  (define-key js2-mode-map "@" 'js-doc-insert-tag)
+  (setq js2-concat-multiline-strings t))
+
+(use-package js-doc
+  :ensure t)
 
 (use-package jedi
   :ensure t
