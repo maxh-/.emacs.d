@@ -160,7 +160,7 @@
 (use-package base16-theme
   :ensure t
   :config
-  (load-theme 'base16-ocean))
+  (load-theme 'base16-oceanicnext))
 
 (use-package exec-path-from-shell
   :ensure t
