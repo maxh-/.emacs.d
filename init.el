@@ -289,8 +289,8 @@
 ;;;
 
 (cond
- ((find-font (font-spec :name "DejaVu Sans"))
-  (set-frame-font "DejaVu Sans Mono-11"))
+ ((find-font (font-spec :name "DejaVu Sans Mono"))
+  (set-frame-font "DejaVu Sans Mono-14"))
  ((find-font (font-spec :name "inconsolata"))
   (set-frame-font "inconsolata-12"))
  ((find-font (font-spec :name "courier"))
