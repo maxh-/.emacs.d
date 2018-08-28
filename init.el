@@ -90,7 +90,7 @@
                     :background (face-background 'default))
 
 ;; Use ido-mode for finding files with `C-x C-f'
-;;(ido-mode t)
+(ido-mode t)
 (ido-everywhere t)
 (setq ido-show-dot-for-dired t)
 (setq ido-flex-matching t)
