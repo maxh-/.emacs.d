@@ -198,13 +198,9 @@
 (use-package js-doc
   :ensure t)
 
-(use-package jedi
+(use-package python-mode
   :ensure t
-  :mode  ("\\.py\\'")
-  :config
-  (add-hook 'python-mode-hook #'jedi:setup)
-  (add-hook 'python-mode-hook #'jedi:ac-setup)
-  (setq jedi:complete-on-dot t))
+  :defer t)
 
 (use-package lua-mode
   :ensure t
