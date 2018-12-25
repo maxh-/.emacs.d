@@ -171,9 +171,7 @@
 (use-package dired
   :defer t
   :bind (:map dired-mode-map ("C-u" . dired-up-directory))
-  :init
-  ;; Show folders first in dired mode
-  (setq dired-listing-switches "-aBhl  --group-directories-first"))
+  :init)
 
 (use-package dired-hide-dotfiles
   :ensure t
