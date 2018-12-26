@@ -88,8 +88,8 @@
                     :foreground (face-foreground 'default)
                     :background (face-background 'default))
 
-;; Use ido-mode for finding files with `C-x C-f'
-
+;; Add a little line spacing.
+(setq-default line-spacing 0.1)
 
 ;; Enable colors in `eshell-mode'.
 (require 'ansi-color)
@@ -110,17 +110,25 @@
 ;;;
 
 (defun open-terminal-below ()
-  "Split the window vertically and open a terminal below it."
+  "Split the window horizontally and open a terminal below."
   (interactive)
   (progn (split-window-below)
          (other-window 1)
+         (eshell)))
+
+(defun open-terminal-right ()
+  "Split the window vertically and open a terminal to the right."
+  (interactive)
+  (progn (split-window-right)
+         (windmove-right)
          (eshell)))
 
 ;;;
 ;;; Global keybindings.
 ;;;
 
-;; Open an eshell under current window.
+;; Open an eshell under or beside window.
+(global-set-key (kbd "C-c T") 'open-terminal-right)
 (global-set-key (kbd "C-c t") 'open-terminal-below)
 
 ;; Cycle through windows with C-x C-o.
