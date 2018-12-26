@@ -89,11 +89,7 @@
                     :background (face-background 'default))
 
 ;; Use ido-mode for finding files with `C-x C-f'
-(ido-mode t)
-(ido-everywhere t)
-(setq ido-show-dot-for-dired t)
-(setq ido-flex-matching t)
-(setq ido-auto-merge-work-directories-length -1)
+
 
 ;; Enable colors in `eshell-mode'.
 (require 'ansi-color)
@@ -276,7 +272,23 @@
   :mode ("\\.el\\'")
   :config
   (emacs-lisp-mode)
-  (paredit-mode))
+  (paredit-mode t))
+
+(use-package ido
+  :ensure t
+  :demand t
+  :config
+  (ido-mode t)
+  (ido-everywhere t)
+  (setq ido-show-dot-for-dired t)
+  (setq ido-flex-matching t)
+  (setq ido-auto-merge-work-directories-length -1))
+
+(use-package ido-yes-or-no
+  :ensure t
+  :requires ido
+  :config
+  (ido-yes-or-no-mode t))
 
 ;;;
 ;;; Fonts.
