@@ -53,7 +53,6 @@
 (setq shell-command-sw/itch "-ic")
 
 ;; Prompt less.
-(fset 'yes-or-no-p 'y-or-n-p)
 (setq confirm-nonexistent-file-or-buffer nil)
 
 ;; Don't litter working tree with temp files.
@@ -109,7 +108,6 @@
 
 ;; Remember open buffers between sessions
 (desktop-save-mode 1)
-
 
 ;;;
 ;;; Utility functions.
