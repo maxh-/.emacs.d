@@ -102,9 +102,6 @@
 ;; Use python3 interpeter
 (setq python-shell-interpreter "/usr/bin/python3")
 
-;; Remember open buffers between sessions
-(desktop-save-mode 1)
-
 ;;;
 ;;; Utility functions.
 ;;;
